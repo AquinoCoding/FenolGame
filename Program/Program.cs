@@ -14,6 +14,10 @@ namespace Game
             public string nome;
             public string sexo;
             public string tipo;
+
+            public int vida;
+            public int ataque;
+            public int defesa;
         }
 
         static List<Personagem> personagens = new List<Personagem>();
@@ -25,33 +29,26 @@ namespace Game
 
             Console.WriteLine("Play to Game\n");
             Console.WriteLine("Bem Vindo a Silicon Valley\n");
-
-            AuthenticLevelUp();
             MenuPrincipal();
-            AuthenticLevelUp();
         }
 
         static bool AuthenticLevelUp(){
-            
 
             if (conditionInitial){
 
                 conditionInitial = false;
-                
                 LevelUp();
             }
             else{
-
                 LevelUp();
             }
-            
             return conditionInitial; 
         }
 
         static int LevelUp(){
 
             NumFase = NumFase + 1;
-            Console.WriteLine($"Seu nivel: {NumFase}");
+            Console.WriteLine($"Nivel: {NumFase}");
             
             return NumFase;
 
@@ -64,21 +61,21 @@ namespace Game
             Console.WriteLine("---> New Game [1]\n---> Load Game[2]\n");
 
             if (Option() == "1"){
-                MenuPersonagem();
+                MenuPersonagemCad();
             }else{
                 Console.WriteLine("Loandig...");
             }
 
         }
 
-        static void MenuPersonagem(){
+        static void MenuPersonagemCad(){
 
             Personagem personagem = new Personagem();
 
             Console.WriteLine("-----------Nome----------");
             personagem.nome = Console.ReadLine();
 
-            // Escolha do Sexo do Personagem 
+            // Escolhas dos Personagem 
             Console.WriteLine("-----------Tipo----------\nMasculino[1]  Feminino[2]");
 
             if (Option() == "1"){
@@ -95,9 +92,27 @@ namespace Game
                 personagem.tipo = "Mago";
             }
 
+            // Cadastro de Vida, Ataque e Defesa
+            
+            personagem.vida = 120;
+            personagem.ataque = 25;
+            personagem.defesa = 20;
+
             personagens.Add(personagem);
 
-            Console.WriteLine($"\n{personagem.nome} {personagem.sexo} {personagem.tipo} {Lucky()}");
+            // Bonus inicial
+            Console.WriteLine($"{Lucky()}");
+
+            Console.WriteLine($"\n     Status\n");
+
+            // Definidor de Nivel Inicial
+            AuthenticLevelUp();
+
+            // Definições Personagem
+            Console.WriteLine($"Nome: {personagem.nome}\nSexo: {personagem.sexo}\nTipo: {personagem.tipo}\n");
+
+            // Definições atributos
+            Console.WriteLine($"       Vida: {personagem.vida}  \nAtaque: {personagem.ataque}   Defesa: {personagem.defesa}\n");
         }
 
         static string Option(){
@@ -109,12 +124,12 @@ namespace Game
         static string Lucky(){
 
             // Condição para saber se a fase é PAR
-            int Fase = 1;
+            int Fase = NumFase;
             if (Fase % 2 == 0 || Fase == 1){
 
                 // Teste de Sorte
 
-                int dadosLucky = lucky.Next(10, 20);
+                int dadosLucky = lucky.Next(15, 20);
 
                 //Console.WriteLine(dadosLucky);
 
@@ -128,31 +143,26 @@ namespace Game
                     if (dadosLuckyPremio == 1){
                         string itemBonus = "Espada";
                         Console.WriteLine($"A Coruja trouxe uma {itemBonus}");
-                        return "Espada";
                     }
                     else if (dadosLuckyPremio == 2){
                         string itemBonus = "Escudo";
                         Console.WriteLine($"A Coruja trouxe um {itemBonus}");
-                        return "Escudo";
                     }
                     else if (dadosLuckyPremio == 3){
                         string itemBonus = "Moedas de ouro";
                         int dadosLuckyMoedas = lucky.Next(1, 200);
 
                         Console.WriteLine($"A Coruja trouxe $${dadosLuckyMoedas} {itemBonus}");
-                        return "Moedas de ouro";
                     }
-
-                }else{
-                    
-                    return "A coruja extraviou sua entrega";
+                    return null;
 
                 }
-                
-            }
-
-            return "";
+                else{
+                    return "\nA coruja extraviou sua entrega";
+                }
+            }   return null;
         }
+
 
     }
 }
